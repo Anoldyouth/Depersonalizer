@@ -1,0 +1,10 @@
+alembic==1.13.1
+SQLAlchemy==2.0.29
+
+spacy~=3.7.4
+enum34~=1.1.10
+python-dateutil~=2.9.0.post0
+pymorphy2~=0.9.1
+redis~=5.0.4
+requests~=2.31.0
+Faker~=25.0.0
