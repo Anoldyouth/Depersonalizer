@@ -1,7 +1,7 @@
 import os
 
 MODEL_PATH = os.getenv("MODEL_PATH", "ru_core_news_sm")
-YEAR_DELTA = os.getenv("YEAR_DELTA", 2)
+YEAR_DELTA = int(os.getenv("YEAR_DELTA", 2))
 CHUNK = int(os.getenv('CHUNK', 200))
 
 REDIS_FROM_PREFIX = os.getenv('REDIS_FROM_PREFIX', 'from_')

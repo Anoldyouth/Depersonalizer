@@ -1,12 +1,13 @@
 import pymorphy2
+from sqlalchemy.orm import Session
 
 from models.component import Component
 from tests.factories.AbstractFactory import AbstractFactory
 
 
 class ComponentFactory(AbstractFactory):
-    def __init__(self):
-        super().__init__(Component)
+    def __init__(self, session: Session):
+        super().__init__(session, Component)
 
     def definition(self) -> dict:
         name_functions = {

@@ -5,7 +5,7 @@ from collections import defaultdict
 
 import pymorphy2
 import redis
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, not_
 
 from config.config import REDIS_FROM_PREFIX, REDIS_TO_PREFIX, REDIS_TTL, CHUNK
 from config.connection import DatabaseHelper
@@ -64,11 +64,14 @@ class PersonTransformation(AbstractTransformation):
 
                     continue
 
+                related_ids = [related.id for related in founded.components]
+
                 # Поиск аналогичных компонентов для замены
                 query = session.query(Component).filter(and_(
                     Component.id != founded.id,
                     Component.gender == founded.gender,
-                    Component.type == founded.type
+                    Component.type == founded.type,
+                    not_(Component.id.in_(related_ids))
                 )).order_by(func.abs(Component.popularity - founded.popularity))
 
                 was_found = False

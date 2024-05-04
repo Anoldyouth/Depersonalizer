@@ -6,10 +6,23 @@ services:
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     volumes:
       - postgresql:/var/lib/postgresql/data
+    networks:
+      - depersonalizer
+
+  postgresql-test:
+    container_name: postgresql-test
+    image: postgres:16
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}_test
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     networks:
       - depersonalizer
 

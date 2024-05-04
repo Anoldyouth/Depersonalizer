@@ -70,8 +70,8 @@ class DateTransformation(AbstractTransformation):
         random_date = min_border + (max_border - min_border) * random.random()
         self._transformed_date = random_date
 
-        return (date_input[:day_start] + str(random_date.day).zfill(2) + date_input[day_end:month_start]
-                + (calendar.month_name[random_date.month] if from_array else str(random_date.month).zfill(2))
+        return (date_input[:day_start] + str(random_date.day).zfill(len(day)) + date_input[day_end:month_start]
+                + (calendar.month_name[random_date.month] if from_array else str(random_date.month).zfill(len(month)))
                 + date_input[month_end:year_start] + str(random_date.year) + date_input[year_end:])
 
     def get_transformed_date(self) -> datetime.date | None:

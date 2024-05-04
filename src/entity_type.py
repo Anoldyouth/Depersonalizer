@@ -9,6 +9,7 @@ class EntityType(Enum):
     EMAIL = 'EMAIL'
     PASSPORT = 'PASSPORT'
 
-    def sort_key(self, record):
+    @staticmethod
+    def sort_key(record: dict) -> tuple:
         # Сначала записи с меткой 'DATE', затем все остальные
         return record['ent']['label_'] != 'DATE', record['text']

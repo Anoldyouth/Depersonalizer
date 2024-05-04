@@ -31,20 +31,20 @@ class AddressTransformation(AbstractTransformation):
             return f'<{EntityType.LOCATION.value}>'
 
         address = addresses[0]  # Найденный адрес
-        path: str = address['hierarchy'][0]['object_id']
+        path: str = str(address['hierarchy'][0]['object_id'])
         region_code: str = str(address['hierarchy'][0]['region_code'])
         replacing_indexes = []
 
         # Составляем маску искомого пути адреса
         for index, component in enumerate(address['hierarchy'][1:]):
-            if 'object_level_id' in component and component['object_level_id'] <= self.max_level:
+            if 'object_level_id' in component and int(component['object_level_id']) <= self.max_level:
                 path += f'.{component["object_id"]}'
             else:
-                replacing_indexes.append(index)
+                replacing_indexes.append(index + 1)
                 path += f'.\\d'
 
         try:
-            replace_address_id = self.__search_in_xml(address_type, region_code, path, address['object_id'])
+            replace_address_id = self.__search_in_xml(address_type, region_code, path, str(address['object_id']))
         except Exception:
             # Не смогли получить данные от сервиса из-за ошибки, нет возможности обезличить
             return f'<{EntityType.LOCATION.value}>'
@@ -61,8 +61,9 @@ class AddressTransformation(AbstractTransformation):
 
     @staticmethod
     def __search_in_xml(address_type: int, region_code: str, path_prepared: str, exclude_id: str) -> int | None:
-        directory = f'../../sar/{region_code.zfill(0)}'
-        filename_start = 'AS_ADM_HIERARCHY' if address_type == 1 else f'AS_MUN_HIERARCHY'
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        directory = f'{current_directory}/../../sar/{region_code.zfill(2)}'
+        filename_start = 'AS_ADM_HIERARCHY' if address_type == 1 else 'AS_MUN_HIERARCHY'
 
         files_in_directory = os.listdir(directory)
         matching_file: str | None = None
@@ -74,7 +75,7 @@ class AddressTransformation(AbstractTransformation):
         if not matching_file:
             return None
 
-        tree = ElementTree.parse(matching_file)
+        tree = ElementTree.parse(f'{directory}/{matching_file}')
         root = tree.getroot()
 
         matching_items = []

@@ -5,7 +5,6 @@ import re
 from dateutil.relativedelta import relativedelta
 
 from config.config import YEAR_DELTA
-from entity_type import EntityType
 from transformations.abstract_transformation import AbstractTransformation
 
 

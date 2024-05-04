@@ -1,15 +1,14 @@
 from abc import ABC
 
 from faker import Faker
-
-from config.connection import DatabaseHelper
+from sqlalchemy.orm import Session
 
 
 class AbstractFactory(ABC):
-    database_helper = DatabaseHelper()
     faker = Faker('ru_RU')
 
-    def __init__(self, class_variable):
+    def __init__(self, session: Session, class_variable):
+        self.session = session
         self.class_variable = class_variable
 
     def definition(self) -> dict:
@@ -24,10 +23,9 @@ class AbstractFactory(ABC):
         return self.class_variable(**params)
 
     def create(self, extra=None):
-        with self.database_helper.get_session() as session:
-            obj = self.make(extra)
-            session.add(obj)
-            session.commit()
-            session.refresh(obj)
+        obj = self.make(extra)
+        self.session.add(obj)
+        self.session.commit()
+        self.session.refresh(obj)
 
         return obj

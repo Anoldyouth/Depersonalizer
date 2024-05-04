@@ -2,7 +2,6 @@ import random
 import re
 import string
 
-from entity_type import EntityType
 from transformations.abstract_transformation import AbstractTransformation
 
 
