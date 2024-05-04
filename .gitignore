@@ -4,3 +4,4 @@
 
 sar/*
 !sar/.gitkeep
+__pycache__/

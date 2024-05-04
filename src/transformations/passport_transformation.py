@@ -9,7 +9,7 @@ from transformations.abstract_transformation import AbstractTransformation
 
 
 class PassportTransformation(AbstractTransformation):
-    _passport_regex: str = r'\d{2}(\d{2})\D*(\d{6})'
+    _passport_regex: str = r'\D*\d{2}(\d{2})\D*(\d{6})'
     _year_delta: int = YEAR_DELTA
 
     def __init__(self, transformed_date: datetime.date | None):
@@ -18,6 +18,7 @@ class PassportTransformation(AbstractTransformation):
     def transform(self, passport_input: str) -> str:
         now = datetime.datetime.now()
         match = re.match(self._passport_regex, passport_input)
+        print('testing_match', match)
 
         # Значит строка - не паспортные данные, не заменяем
         if not match:
