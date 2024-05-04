@@ -9,8 +9,11 @@ from transformations.date_transformation import DateTransformation
 
 
 @pytest.fixture
-def prepare_env():
-    os.environ['YEAR_DELTA'] = '2'
+def prepared_transformation():
+    transformation = DateTransformation()
+    transformation._year_delta = 2
+
+    yield transformation
 
 
 @freeze_time("2024-06-01")
@@ -22,15 +25,14 @@ def prepare_env():
     ('01.01.2005', 1, '01.06.2006'),  # 19 лет, минимальная граница
     ('01.01.2005', 0, '01.01.2003'),  # 19 лет, минимальная граница
 ])
-def test_date_transformation_different_intervals(prepare_env, date: str, fixed_random: int, expected: str):
-    transformation = DateTransformation()
+def test_date_transformation_different_intervals(prepared_transformation, date: str, fixed_random: int, expected: str):
     with patch('random.random') as mock_random:
         mock_random.return_value = fixed_random
 
-        new_date = transformation.transform(date)
+        new_date = prepared_transformation.transform(date)
 
     assert new_date == expected
-    assert transformation.get_transformed_date() is not None
+    assert prepared_transformation.get_transformed_date() is not None
 
 
 @freeze_time("2024-06-01")

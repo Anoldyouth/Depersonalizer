@@ -5,6 +5,7 @@ from unittest.mock import patch, MagicMock, Mock
 
 import pytest
 
+from clients.sar_client import SarClient
 from transformations.address_transformation import AddressTransformation
 
 test_region = 0
@@ -117,10 +118,12 @@ get_address_item_by_id_response = """{
 
 
 @pytest.fixture
-def prepare_env():
-    os.environ['SAR_HOST'] = '127.0.0.1'
-    os.environ['SAR_MASTER_KEY'] = 'key'
-    os.environ['MAX_LEVEL'] = '6'
+def prepared_transformation():
+    transformation = AddressTransformation()
+    transformation.sar_client = SarClient('127.0.0.1', 'key')
+    transformation.max_level = 6
+
+    return transformation
 
 
 @pytest.fixture
@@ -140,7 +143,7 @@ def adm_file():
 
 
 @patch('random.shuffle')
-def test_address_transformation_adm(mock_shuffle: MagicMock, adm_file, prepare_env):
+def test_address_transformation_adm(mock_shuffle: MagicMock, adm_file, prepared_transformation):
     def get_response(url: str, *args, **kwargs):
         if url.endswith('/SearchAddressItems'):
             mock_search_items_response = Mock()
@@ -155,12 +158,10 @@ def test_address_transformation_adm(mock_shuffle: MagicMock, adm_file, prepare_e
 
             return mock_get_address_item_by_id_response
 
-    transformation = AddressTransformation()
-
     with patch('requests.get', side_effect=get_response) as request_get_mock:
         mock_shuffle.side_effect = lambda x: x
 
-        new_address = transformation.transform(
+        new_address = prepared_transformation.transform(
             "Первый объект_1, Второй об_2, третий Объект_3, четвертый Об_4, пятый объект_5"
         )
 
@@ -188,7 +189,7 @@ def mun_file():
 
 
 @patch('random.shuffle')
-def test_address_transformation_mun(mock_shuffle: MagicMock, mun_file, prepare_env):
+def test_address_transformation_mun(mock_shuffle: MagicMock, mun_file, prepared_transformation):
     def get_response(url: str, *args, **kwargs):
         if kwargs['params']['address_type'] == 1:
             response = Mock()
@@ -210,12 +211,10 @@ def test_address_transformation_mun(mock_shuffle: MagicMock, mun_file, prepare_e
 
             return mock_get_address_item_by_id_response
 
-    transformation = AddressTransformation()
-
     with patch('requests.get', side_effect=get_response) as request_get_mock:
         mock_shuffle.side_effect = lambda x: x
 
-        new_address = transformation.transform(
+        new_address = prepared_transformation.transform(
             "Первый объект_1, Второй об_2, третий Объект_3, четвертый Об_4, пятый объект_5"
         )
 
@@ -226,7 +225,7 @@ def test_address_transformation_mun(mock_shuffle: MagicMock, mun_file, prepare_e
         assert request_get_mock.mock_calls[2].kwargs['params']['address_type'] == 2
 
 
-def test_address_not_found(prepare_env):
+def test_address_not_found(prepared_transformation):
     def get_response(url: str, *args, **kwargs):
         response = Mock()
         response.status_code = 200
@@ -234,11 +233,9 @@ def test_address_not_found(prepare_env):
 
         return response
 
-    transformation = AddressTransformation()
-
     with patch('requests.get', side_effect=get_response) as request_get_mock:
 
-        new_address = transformation.transform(
+        new_address = prepared_transformation.transform(
             "Первый объект_1, Второй об_2, третий Объект_3, четвертый Об_4, пятый объект_5"
         )
 
