@@ -6,9 +6,6 @@ from unittest.mock import Mock, patch
 import pytest
 from alembic.command import upgrade
 from freezegun import freeze_time
-from pytest_mock import mocker
-from pytest_mock_resources import create_redis_fixture
-from redis import Redis
 
 from config.connection import DatabaseHelper
 from depersonalizer import Depersonalizer
