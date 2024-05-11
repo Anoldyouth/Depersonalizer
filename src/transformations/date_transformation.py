@@ -26,7 +26,7 @@ class DateTransformation(AbstractTransformation):
     def transform(self, date_input: str) -> str:
         match: re.Match | None = None
         for pattern in self._date_patterns:
-            match = re.match(pattern, date_input)
+            match = re.search(pattern, date_input)
             if match:
                 break
 

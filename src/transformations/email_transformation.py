@@ -9,7 +9,7 @@ class EmailTransformation(AbstractTransformation):
     _email_regex: str = r'^([a-zA-Z0-9._%+-]+)@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
     def transform(self, email_input: str) -> str:
-        match = re.match(self._email_regex, email_input)
+        match = re.search(self._email_regex, email_input)
 
         # Значит строка - не электронная почта, не преобразуем
         if not match:

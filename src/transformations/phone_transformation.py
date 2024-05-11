@@ -9,7 +9,7 @@ class PhoneTransformation(AbstractTransformation):
     _phone_regex: str = r'(?:(?:\+7|8)(?:\s|\()?)?(\d{3})(?:\s|\))?(\d{3})(?:\-|\s)?(\d{2})(?:\-|\s)?(\d{2})'
 
     def transform(self, phone_input: str) -> str:
-        match = re.match(self._phone_regex, phone_input)
+        match = re.search(self._phone_regex, phone_input)
 
         # Значит строка - не номер телефона, не преобразуем
         if not match:
