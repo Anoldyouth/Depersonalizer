@@ -10,8 +10,8 @@ from sqlalchemy import and_, func, not_
 from config.config import REDIS_FROM_PREFIX, REDIS_TO_PREFIX, REDIS_TTL, CHUNK
 from config.connection import DatabaseHelper
 from config.connection import RedisHelper
-from models.component import Component
-from transformations.abstract_transformation import AbstractTransformation
+from src.models.component import Component
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class PersonTransformation(AbstractTransformation):

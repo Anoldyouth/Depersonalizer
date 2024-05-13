@@ -2,7 +2,7 @@ import random
 import re
 import string
 
-from transformations.abstract_transformation import AbstractTransformation
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class EmailTransformation(AbstractTransformation):

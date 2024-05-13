@@ -5,7 +5,7 @@ import re
 from dateutil.relativedelta import relativedelta
 
 from config.config import YEAR_DELTA
-from transformations.abstract_transformation import AbstractTransformation
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class PassportTransformation(AbstractTransformation):

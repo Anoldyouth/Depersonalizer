@@ -7,8 +7,8 @@ import re
 from dateutil.relativedelta import relativedelta
 
 from config.config import YEAR_DELTA
-from entity_type import EntityType
-from transformations.abstract_transformation import AbstractTransformation
+from src.entity_type import EntityType
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class DateTransformation(AbstractTransformation):

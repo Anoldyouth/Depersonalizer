@@ -1,8 +1,8 @@
 import random
 import re
 
-from entity_type import EntityType
-from transformations.abstract_transformation import AbstractTransformation
+from src.entity_type import EntityType
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class PhoneTransformation(AbstractTransformation):

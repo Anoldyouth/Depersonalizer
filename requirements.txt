@@ -11,4 +11,6 @@ Faker~=25.0.0
 pytest~=8.2.0
 freezegun~=1.5.0
 ConfigArgParse~=1.7
-python-dotenv~=1.0.1
+fastapi~=0.111.0
+pydantic~=2.7.1
+starlette~=0.37.2

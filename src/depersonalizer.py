@@ -5,14 +5,14 @@ import spacy
 from spacy import Language
 
 from config.config import MODEL_PATH
-from entity_type import EntityType
-from transformations.abstract_transformation import AbstractTransformation
-from transformations.address_transformation import AddressTransformation
-from transformations.date_transformation import DateTransformation
-from transformations.email_transformation import EmailTransformation
-from transformations.passport_transformation import PassportTransformation
-from transformations.person_transformation import PersonTransformation
-from transformations.phone_transformation import PhoneTransformation
+from src.entity_type import EntityType
+from src.transformations.abstract_transformation import AbstractTransformation
+from src.transformations.address_transformation import AddressTransformation
+from src.transformations.date_transformation import DateTransformation
+from src.transformations.email_transformation import EmailTransformation
+from src.transformations.passport_transformation import PassportTransformation
+from src.transformations.person_transformation import PersonTransformation
+from src.transformations.phone_transformation import PhoneTransformation
 
 
 class Depersonalizer:

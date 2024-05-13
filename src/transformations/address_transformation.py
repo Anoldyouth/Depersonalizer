@@ -3,10 +3,10 @@ import random
 import re
 from xml.etree import ElementTree
 
-from clients.sar_client import SarClient
+from src.clients.sar_client import SarClient
 from config.config import SAR_HOST, SAR_MASTER_KEY, MAX_LEVEL
-from entity_type import EntityType
-from transformations.abstract_transformation import AbstractTransformation
+from src.entity_type import EntityType
+from src.transformations.abstract_transformation import AbstractTransformation
 
 
 class AddressTransformation(AbstractTransformation):
