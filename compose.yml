@@ -1,0 +1,46 @@
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:16
+    hostname: ${DB_HOST:-postgresql}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - depersonalizer
+
+  postgresql-test:
+    container_name: postgresql-test
+    image: postgres:16
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}_test
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    networks:
+      - depersonalizer
+
+  redis:
+    container_name: redis
+    image: redis:7.2.4
+    hostname: ${REDIS_HOST:-redis}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:-pass}"
+    networks:
+      - depersonalizer
+
+volumes:
+  postgresql: { }
+
+networks:
+  depersonalizer: { }
